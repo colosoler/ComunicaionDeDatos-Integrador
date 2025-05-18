@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitalización de Imágenes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <section id="inputs">
+                <label for="resolucion">Resolución: </label>
+                <select name="resolucion" id="resolucion">
+                    <option selected>Seleccione una resolución</option>
+                    <option>Coche</option>
+                    <option>Avión</option>
+                    <option>Tren</option>
+                </select>
+                <label for="bits">Profundidad de bits: </label>
+                <select name="bits" id="bits">
+                    <option selected>Seleccione una resolución</option>
+                    <option>1</option>
+                    <option>8</option>
+                    <option>24</option>
+                </select>
+            <input type="submit" id="enviar">
+        </section>
+
+        <section id="adjuntar_imagen">
+            <h3>Adjuntar imagen</h3>
+            <label id="caja" for="imageInput"></label>
+            <input type="file" id="imageInput" accept="image/*">
+        </section>
+
+        <section id="section_original">
+            <h3>Imágen original: </h3>
+            <div id="img_original"></div>
+            <p id="res_original">Resolución: </p>
+            <p id="bits_original">Profundidad de bits: </p>
+        </section>
+
+        <section id="section_modificada">
+            <h3>Imágen modificada: </h3>
+            <div id="img_modificada"></div>
+            <p id="res_mod">Resolución: </p>
+            <p id="bits_mod">Profundidad de bits: </p>
+        </section>
+    </main>
+    <script src="scripts.js"></script>
+</body>
+</html>

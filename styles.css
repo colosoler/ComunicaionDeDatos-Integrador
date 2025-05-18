@@ -1,0 +1,93 @@
+body{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+main{
+    display: grid;
+    grid-template-areas: 
+    "inputs adjuntar_imagen"
+    "img_original img_modificada"
+    ;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+#inputs{
+    grid-area: inputs;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #ddd;
+    border-radius: 1em;
+    margin: 2em auto;
+    font-weight: bold;
+    gap: 1em;
+    padding: 2em;
+}
+#enviar{
+    width: 100%;
+    background-color: #222;
+    color: #fff;
+    border-radius: 1em;
+}
+
+#section_original{
+    grid-area: img_original;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    font-weight: bold;
+    gap: 1em;
+}
+
+#section_modificada{
+    grid-area: img_modificada;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    font-weight: bold;
+    gap: 1em;
+}
+
+#img_original, #img_modificada{
+    width: 200px;
+    height: 200px;
+    background-color: brown;
+}
+
+#adjuntar_imagen h3{
+    padding: 0;
+    margin-top: 0;
+}
+#adjuntar_imagen {
+    grid-area: adjuntar_imagen;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+    margin: 2em auto;
+}
+
+#caja {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+#caja:hover {
+    background-color: #e0e0e0;
+}
+#caja::before {
+    content: "+";
+    font-size: 24px;
+    color: #666;
+}
+#imageInput {
+    display: none;
+}
