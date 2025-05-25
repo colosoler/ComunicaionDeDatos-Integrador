@@ -1,31 +1,18 @@
+from flask import Flask, render_template, request
 import cv2
-from PIL import Image
 import io
+from PIL import Image
+import base64
+import numpy as np
 
-def digitalizar_imagen(ruta_imagen, nueva_resolucion=(100, 100), bits_por_pixel=8, calidad_jpeg=75):
-    """
-    Simula la digitalización de una imagen: muestreo, cuantización y compresión.
-    
-    Args:
-        ruta_imagen (str): Ruta del archivo de imagen de entrada.
-        nueva_resolucion (int): Nuevo tamaño (imagen cuadrada nueva_resolucion x nueva_resolucion).
-        bits_por_pixel (int): Profundidad de bits: 1, 8 o 24.
-        calidad_jpeg (int): Calidad de compresión JPEG (1 a 100).
+app=Flask(__name__)
 
-    Returns:
-        imagen_original (PIL.Image): Imagen original cargada.
-        imagen_modificada (PIL.Image): Imagen digitalizada.
-        bytes_comprimidos (bytes): Bytes de imagen JPEG comprimida.
-    """
-
-    # 1. Cargar imagen original (OpenCV usa BGR, convertimos a RGB)
-    original_cv = cv2.imread(ruta_imagen)
+def digitalizar_imagen(imagen, nueva_resolucion=(100, 100), bits_por_pixel=8):
+    file_bytes = imagen.read()
+    np_arr = np.frombuffer(file_bytes, np.uint8)
+    original_cv = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     original_rgb = cv2.cvtColor(original_cv, cv2.COLOR_BGR2RGB)
-
-    # Convertimos a PIL para facilitar los pasos siguientes
     imagen_original = Image.fromarray(original_rgb)
-
-    # 2. Muestreo - cambiar resolución
     imagen_muestreada = imagen_original.resize(nueva_resolucion, Image.BILINEAR)
 
     # 3. Cuantización (reducción de bits)
@@ -38,37 +25,41 @@ def digitalizar_imagen(ruta_imagen, nueva_resolucion=(100, 100), bits_por_pixel=
     else:
         raise ValueError("Solo se admiten 1, 8 o 24 bits por píxel.")
 
-    # 4. Compresión - guardar como JPEG en memoria
+    return imagen_original, imagen_cuantizada
+
+def convertir_a_base64(pil_img):
     buffer = io.BytesIO()
-    imagen_cuantizada.save(buffer, format="JPEG", quality=calidad_jpeg)
+    pil_img.save(buffer, format="JPEG")
     buffer.seek(0)
-    bytes_comprimidos = buffer.getvalue()
+    img_str = base64.b64encode(buffer.read()).decode('utf-8')
+    return f"data:image/jpeg;base64,{img_str}"
 
-    return imagen_original, imagen_cuantizada, bytes_comprimidos
+    
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    print("Entré a index")
+    if request.method == 'POST':
+        resolucion_str = request.form['resolucion']
+        bits = int(request.form['bits'])
+        imagen_file = request.files['imagen']
 
-from PIL import Image
-import matplotlib.pyplot as plt
+        w, h = map(int, resolucion_str.split('x'))
 
-# Ruta de una imagen de prueba
-ruta = "ejemplo.jpg"
+        original, modificada = digitalizar_imagen(
+            imagen_file,
+            nueva_resolucion=(w, h),
+            bits_por_pixel=bits
+        )
 
-original, modificada, salida = digitalizar_imagen(
-    ruta_imagen=ruta,
-    nueva_resolucion=(100,100),
-    bits_por_pixel=8,
-    calidad_jpeg=50
-)
+        original_b64 = convertir_a_base64(original)
+        modificada_b64 = convertir_a_base64(modificada)
 
-# Mostrar imágenes lado a lado
-plt.subplot(1, 2, 1)
-plt.title("Original")
-plt.imshow(original)
-plt.axis('off')
+        # Renderizamos index.html con las imágenes para mostrar
+        return render_template('index.html',
+                               original_img=original_b64,
+                               modificada_img=modificada_b64)
+    else:
+        return render_template('index.html')
 
-plt.subplot(1, 2, 2)
-plt.title("Digitalizada")
-plt.imshow(modificada)
-plt.axis('off')
-
-plt.show()
-
+if __name__ == '__main__':
+    app.run(debug=True)

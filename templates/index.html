@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitalización de Imágenes</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <main>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <section id="inputs">
+                <label for="resolucion">Resolución: </label>
+                <select name="resolucion" id="resolucion">
+                    <option selected>Seleccione una resolución</option>
+                    <option value="640x480">640x480</option>
+                    <option value="800x600">800x600</option>
+                    <option value="1024x768">1024x768</option>
+                </select>
+                <label for="bits">Profundidad de bits: </label>
+                <select name="bits" id="bits">
+                    <option selected>Seleccione una resolución</option>
+                    <option>1</option>
+                    <option>8</option>
+                    <option>24</option>
+                </select>
+            <input type="submit" id="enviar">
+            </section>
+            <section id="adjuntar_imagen">
+                <h3>Adjuntar imagen</h3>
+                <label id="caja" for="imageInput"></label>
+                <input type="file" id="imageInput" name="imagen" accept="image/*" required>
+            </section>
+        </form>
+            
+        <section id="section_original">
+            {% if original_img %}
+            <div id="img_original">
+            <h3>Imagen Original</h3>
+            <img src="{{ original_img }}" alt="Original">
+            </div>
+            {% endif %}
+        </section>
+
+        <section id="section_modificada">
+            {% if modificada_img %}
+            <div id="img_modificada">
+              <h2>Imagen Modificada</h2>
+              <img src="{{ modificada_img }}" alt="Modificada">
+            </div>
+            {% endif %}
+        </section>
+    </main>
+      <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>
