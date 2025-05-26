@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digitalización de Imágenes</title>
-      <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
     <main>
         <form action="/" method="POST" enctype="multipart/form-data">
@@ -16,28 +18,38 @@
                     <option value="640x480">640x480</option>
                     <option value="800x600">800x600</option>
                     <option value="1024x768">1024x768</option>
+                    <option value="1280x720">1280x720 (HD)</option>
+                    <option value="1920x1080">1920x1080 (Full HD)</option>
+                    <option value="3840x2160">3840x2160 (4K UHD)</option>
+                    <option value="100x100">100x100 (baja)</option>
                 </select>
                 <label for="bits">Profundidad de bits: </label>
                 <select name="bits" id="bits">
-                    <option selected>Seleccione una resolución</option>
+                    <option selected>Seleccione una profundidad de bits</option>
                     <option>1</option>
                     <option>8</option>
                     <option>24</option>
                 </select>
-            <input type="submit" id="enviar">
+                <input type="submit" id="enviar">
             </section>
             <section id="adjuntar_imagen">
                 <h3>Adjuntar imagen</h3>
                 <label id="caja" for="imageInput"></label>
                 <input type="file" id="imageInput" name="imagen" accept="image/*" required>
+
+                <!-- Elemento donde se mostrará el nombre del archivo y botón para cambiar -->
+                <div id="imagenInfo" style="display: none; margin-top: 10px; text-align: center;">
+                    <p id="nombreImagen" style="margin: 0;"></p>
+                    <button type="button" id="cambiarImagen">Cambiar imagen</button>
+                </div>
             </section>
         </form>
-            
+
         <section id="section_original">
             {% if original_img %}
             <div id="img_original">
-            <h3>Imagen Original</h3>
-            <img src="{{ original_img }}" alt="Original">
+                <h3>Imagen Original</h3>
+                <img src="{{ original_img }}" alt="Original">
             </div>
             {% endif %}
         </section>
@@ -45,14 +57,44 @@
         <section id="section_modificada">
             {% if modificada_img %}
             <div id="img_modificada">
-              <h2>Imagen Modificada</h2>
-              <img src="{{ modificada_img }}" alt="Modificada">
+                <h2>Imagen Modificada</h2>
+                <img src="{{ modificada_img }}" alt="Modificada">
+
+                <!-- Botón de descarga -->
+                <a href="{{ modificada_img }}" download="imagen_modificada.jpg">
+                    <button type="button" id="descargar">Descargar</button>
+                </a>
             </div>
             {% endif %}
         </section>
     </main>
-      <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("imageInput");
+    const caja = document.getElementById("caja");
+    const info = document.getElementById("imagenInfo");
+    const nombre = document.getElementById("nombreImagen");
+    const cambiar = document.getElementById("cambiarImagen");
 
+    input.addEventListener("change", function () {
+        if (input.files.length > 0) {
+            const fileName = input.files[0].name;
+            nombre.textContent = "Imagen cargada: " + fileName;
+            info.style.display = "block";
+            caja.style.display = "none"; // Ocultar caja de subir
+        }
+    });
+
+    cambiar.addEventListener("click", function () {
+        input.value = ""; // Limpiar input
+        nombre.textContent = "";
+        info.style.display = "none";
+        caja.style.display = "flex"; // Mostrar caja de nuevo
+    });
+});
+    </script>
 </body>
+
 </html>

@@ -98,3 +98,36 @@ form{
 #imageInput {
     display: none;
 }
+
+
+
+#descargar {
+    margin-top: 1em;
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+#descargar:hover {
+    background-color: #45a049;
+}
+
+
+#cambiarImagen {
+    margin-top: 0.5em;
+    background-color: #f44336;
+    color: white;
+    padding: 0.3em 0.8em;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+#cambiarImagen:hover {
+    background-color: #d32f2f;
+}
