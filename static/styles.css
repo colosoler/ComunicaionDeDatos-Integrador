@@ -57,10 +57,10 @@ form{
     gap: 1em;
 }
 
-#img_original, #img_modificada{
-    width: 200px;
-    height: 200px;
-    background-color: brown;
+article {
+    display: flex;
+    flex-direction: row;
+    gap: 40em;
 }
 
 #adjuntar_imagen {

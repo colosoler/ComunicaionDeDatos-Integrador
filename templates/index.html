@@ -14,7 +14,7 @@
             <section id="inputs">
                 <label for="resolucion">Resolución: </label>
                 <select name="resolucion" id="resolucion">
-                    <option selected>Seleccione una resolución</option>
+                    <option selected disabled>Seleccione una resolución</option>
                     <option value="640x480">640x480</option>
                     <option value="800x600">800x600</option>
                     <option value="1024x768">1024x768</option>
@@ -25,7 +25,7 @@
                 </select>
                 <label for="bits">Profundidad de bits: </label>
                 <select name="bits" id="bits">
-                    <option selected>Seleccione una profundidad de bits</option>
+                    <option selected disabled>Seleccione una profundidad de bits</option>
                     <option>1</option>
                     <option>8</option>
                     <option>24</option>
@@ -44,29 +44,30 @@
                 </div>
             </section>
         </form>
+        <article>
+            <section id="section_original">
+                {% if original_img %}
+                <div id="img_original">
+                    <h3>Imagen Original</h3>
+                    <img src="{{ original_img }}" alt="Original">
+                </div>
+                {% endif %}
+            </section>
 
-        <section id="section_original">
-            {% if original_img %}
-            <div id="img_original">
-                <h3>Imagen Original</h3>
-                <img src="{{ original_img }}" alt="Original">
-            </div>
-            {% endif %}
-        </section>
+            <section id="section_modificada">
+                {% if modificada_img %}
+                <div id="img_modificada">
+                    <h2>Imagen Modificada</h2>
+                    <img src="{{ modificada_img }}" alt="Modificada">
 
-        <section id="section_modificada">
-            {% if modificada_img %}
-            <div id="img_modificada">
-                <h2>Imagen Modificada</h2>
-                <img src="{{ modificada_img }}" alt="Modificada">
-
-                <!-- Botón de descarga -->
-                <a href="{{ modificada_img }}" download="imagen_modificada.jpg">
-                    <button type="button" id="descargar">Descargar</button>
-                </a>
-            </div>
-            {% endif %}
-        </section>
+                    <!-- Botón de descarga -->
+                    <a href="{{ modificada_img }}" download="imagen_modificada.jpg">
+                        <button type="button" id="descargar">Descargar</button>
+                    </a>
+                </div>
+                {% endif %}
+            </section>
+        </article>
     </main>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
