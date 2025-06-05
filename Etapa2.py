@@ -60,6 +60,13 @@ def index():
                                modificada_img=modificada_b64)
     else:
         return render_template('index.html')
+ 
+import webbrowser
+import threading
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    def abrir_navegador():
+        webbrowser.open_new("http://127.0.0.1:5000/")
+
+    threading.Timer(1, abrir_navegador).start()
+    app.run(debug=True, use_reloader=False)
